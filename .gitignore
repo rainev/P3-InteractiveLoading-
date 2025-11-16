@@ -1,0 +1,39 @@
+# --- Build folders ---
+/build/
+/build-debug/
+/build-release/
+/cmake-build-debug/
+/cmake-build-release/
+
+# --- CMake generated files ---
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# --- SFML / CLion / VSCode temp files ---
+*.log
+*.obj
+*.pdb
+*.dll
+*.exe
+*.app
+
+# macOS Finder junk
+.DS_Store
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# CLion / JetBrains
+.idea/
+
+# --- Your game assets (optional) ---
+# Uncomment these ONLY if assets are too large
+# and you're hosting them externally.
+# assets/*.zip
+# assets/raw/
+
+# --- OS trash ---
+Thumbs.db
