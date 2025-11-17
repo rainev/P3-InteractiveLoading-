@@ -8,6 +8,7 @@
 // [P3] stuff
 #include "SceneManager.h"
 #include "LoadingScreen.h"
+#include "AssetLoader.h"
 
 /// <summary>
 /// This demonstrates a running parallax background where after X seconds, a batch of assets will be streamed and loaded.
@@ -28,12 +29,16 @@ BaseRunner::BaseRunner() :
 	//load initial textures
 	TextureManager::getInstance()->loadFromAssetList();
 
-	//load objects
-	BGObject* bgObject = new BGObject("BGObject");
-	GameObjectManager::getInstance()->addObject(bgObject);
+	//asset loader
+	AssetLoader* assetLoader = new AssetLoader();
+	GameObjectManager::getInstance()->addObject(assetLoader);
 
-	TextureDisplay* display = new TextureDisplay();
-	GameObjectManager::getInstance()->addObject(display);
+	//load objects
+	//BGObject* bgObject = new BGObject("BGObject");
+	//GameObjectManager::getInstance()->addObject(bgObject);
+
+	//TextureDisplay* display = new TextureDisplay();
+	//GameObjectManager::getInstance()->addObject(display);
 
 	FPSCounter* fpsCounter = new FPSCounter();
 	GameObjectManager::getInstance()->addObject(fpsCounter);

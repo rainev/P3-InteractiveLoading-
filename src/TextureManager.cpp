@@ -222,3 +222,93 @@ void TextureManager::instantiateAsTexture(String path, String assetName, bool is
 	}
 	
 }
+
+// P3 loading screen related stuff
+void TextureManager::loadGameAssetsAsync(const std::string& directoryPath)
+{
+	std::cout << "[TextureManager] Starting async load from directory: " << directoryPath << std::endl;
+
+	// First, count how many assets we need to load
+	this->totalAssetsToLoad = 0;
+	for (const auto& entry : std::filesystem::directory_iterator(directoryPath)) {
+		if (entry.is_regular_file()) {
+			this->totalAssetsToLoad++;
+		}
+	}
+
+	std::cout << "[TextureManager] Total assets to load: " << this->totalAssetsToLoad << std::endl;
+
+	// Reset loaded count
+	this->loadedAssetsCount = 0;
+
+	// Now load them asynchronously
+	int index = 0;
+	for (const auto& entry : std::filesystem::directory_iterator(directoryPath)) {
+		if (entry.is_regular_file()) {
+			String path = entry.path().string();
+
+			// Enqueue each asset load task to thread pool
+			this->threadPool->enqueueTask([this, path, index]() {
+
+				// Simulate heavy loading with delay
+				IETThread::sleep(100);  // 100ms delay per asset
+
+				// Extract asset name
+				std::vector<String> tokens = StringUtils::split(path, '/');
+				if (tokens.empty()) {
+					tokens = StringUtils::split(path, '\\');
+				}
+				String filename = tokens[tokens.size() - 1];
+				String assetName = StringUtils::split(filename, '.')[0];
+
+				// Load texture
+				sf::Texture* texture = new sf::Texture();
+				if (texture->loadFromFile(path)) {
+
+					// Thread-safe storage
+					{
+						std::lock_guard<std::mutex> lock(this->queueMutex);
+						this->textureMap[assetName].push_back(texture);
+						this->streamTextureList.push_back(texture);
+					}
+
+					// Thread-safe progress update
+					{
+						std::lock_guard<std::mutex> lock(this->progressMutex);
+						this->loadedAssetsCount++;
+					}
+
+					std::cout << "[TextureManager] Loaded: " << assetName
+						<< " (" << this->loadedAssetsCount << "/"
+						<< this->totalAssetsToLoad << ")" << std::endl;
+				}
+				else {
+					std::cout << "[TextureManager] Failed to load: " << path << std::endl;
+				}
+				});
+
+			index++;
+		}
+	}
+}
+
+float TextureManager::getLoadingProgress() const
+{
+	std::lock_guard<std::mutex> lock(this->progressMutex);
+
+	if (this->totalAssetsToLoad == 0)
+		return 0.0f;
+
+	return (float)this->loadedAssetsCount / (float)this->totalAssetsToLoad;
+}
+
+int TextureManager::getTotalAssetsToLoad() const
+{
+	return this->totalAssetsToLoad;
+}
+
+int TextureManager::getLoadedAssetsCount() const
+{
+	std::lock_guard<std::mutex> lock(this->progressMutex);
+	return this->loadedAssetsCount;
+}

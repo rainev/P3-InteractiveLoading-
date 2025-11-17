@@ -20,6 +20,7 @@ public:
 		String assetName;
 		int index;
 	};
+
 	
 public:
 	static TextureManager* getInstance();
@@ -36,6 +37,12 @@ public:
 	bool hasReadyTexture();
 	LoadedTexture popReadyTexture();
 	int getReadyQueueSize() const;
+
+	// p3 related stuff
+	void loadGameAssetsAsync(const std::string& assetListFile);  
+	float getLoadingProgress() const; 
+	int getTotalAssetsToLoad() const;  
+	int getLoadedAssetsCount() const;
 
 private:
 	TextureManager();
@@ -59,6 +66,11 @@ private:
 	ThreadPool* threadPool;  
 
 	void loadSingleStreamAssetSync(int index);
+
+	// p3 related stuff
+	int totalAssetsToLoad = 0; 
+	int loadedAssetsCount = 0;
+	mutable std::mutex progressMutex;  
 
 
 };
