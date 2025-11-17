@@ -88,6 +88,7 @@ void BaseRunner::render() {
 
 	SceneManager::SceneType currentScene = SceneManager::getInstance()->getCurrentScene();
 
+
 	GameObjectManager::getInstance()->draw(&this->window);
 	this->window.display();
 }

@@ -15,13 +15,15 @@ public:
 
 private:
     std::vector<sf::Sprite*> assetSprites;
-    sf::Text* titleText;
 
-    void loadAllAssets();
-    void arrangeSpritesInGrid();
+    float scrollOffset;
+    float targetScrollOffset;
+    bool needsScrolling;
 
-    // size margin layout (in order)
-    const float SPRITE_SIZE = 100.0f;  
-    const float MARGIN = 10.0f;        
-    const int SPRITES_PER_ROW = 16;    
+    const float SCROLL_SPEED = 200.0f;
+    const int SPRITES_PER_ROW = 10;
+    const int SPRITE_SIZE = 30;
+    const int SPRITE_PADDING = 10;
+
+    void layoutSprites();
 };

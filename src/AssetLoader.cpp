@@ -6,6 +6,7 @@
 #include "SceneManager.h"
 #include <iostream>
 
+#include "BGObject.h"
 #include "FinalScreen.h"
 
 AssetLoader::AssetLoader() : AGameObject("AssetLoader")
@@ -78,6 +79,8 @@ void AssetLoader::update(sf::Time deltaTime)
 
             // create the final screen (assets all loaded)
             FinalScreen* finalScreen = new FinalScreen();
+            BGObject* bgObject = new BGObject("BGObject");
+            GameObjectManager::getInstance()->addObject(bgObject);
             GameObjectManager::getInstance()->addObject(finalScreen);
 
 
