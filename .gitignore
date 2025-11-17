@@ -26,6 +26,9 @@ Makefile
 .vscode/
 *.code-workspace
 
+# VS
+.vs
+
 # CLion / JetBrains
 .idea/
 
@@ -34,6 +37,10 @@ Makefile
 # and you're hosting them externally.
 # assets/*.zip
 # assets/raw/
+
+#
+out/
+thirdparty/
 
 # --- OS trash ---
 Thumbs.db
