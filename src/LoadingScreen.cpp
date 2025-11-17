@@ -4,9 +4,9 @@
 #include "BaseRunner.h"
 #include <iostream>
 
-//#include "PongGame.h"
-//#include "SnakeGame.h"
-//#include "TicTacToeGame.h"
+#include "PingPong.h"
+#include "SnakeGame.h"
+#include "TicTacToeGame.h"
 
 LoadingScreen::LoadingScreen() : AGameObject("LoadingScreen")
 {
@@ -85,22 +85,19 @@ void LoadingScreen::initialize()
 
 void LoadingScreen::createGameBoxes()
 {
-    // Calculate center position for 3 boxes
-    float totalWidth = (BOX_SIZE * 3) + (BOX_SPACING * 2);
+    float totalWidth = (BOX_SIZE * 2) + (BOX_SPACING * 2);
     float startX = (BaseRunner::WINDOW_WIDTH - totalWidth) / 2.0f;
     float startY = BaseRunner::WINDOW_HEIGHT / 2.0f - BOX_SIZE / 2.0f + 50.0f;
 
-    // Create 3 game boxes
+    // make game boxes
+    // number is not relevant thats only display
     GameBox* pongBox = new GameBox("PONG", "0", startX, startY, BOX_SIZE);
     this->gameBoxes.push_back(pongBox);
 
     GameBox* snakeBox = new GameBox("SNAKE", "1", startX + BOX_SIZE + BOX_SPACING, startY, BOX_SIZE);
     this->gameBoxes.push_back(snakeBox);
 
-    GameBox* tttBox = new GameBox("TIC-TAC-TOE", "2", startX + (BOX_SIZE + BOX_SPACING) * 2, startY, BOX_SIZE);
-    this->gameBoxes.push_back(tttBox);
-
-    std::cout << "[LoadingScreen] Created " << this->gameBoxes.size() << " game boxes" << std::endl;
+    std::cout << "LOADINGSCREEN CREATED " << this->gameBoxes.size() << " game boxes" << std::endl;
 }
 
 void LoadingScreen::createBackButton()
@@ -289,17 +286,17 @@ void LoadingScreen::createMiniGame(int gameIndex)
 {
     this->cleanupCurrentGame();
 
-    //switch (gameIndex) {
-    //case 0: // Pong
-    //    this->currentGame = new PongGame();
-    //    break;
-    //case 1: // Snake
-    //    this->currentGame = new SnakeGame();
-    //    break;
-    //case 2: // Tic-Tac-Toe
-    //    this->currentGame = new TicTacToeGame();
-    //    break;
-    //}
+    switch (gameIndex) {
+    case 0: // Pong
+        //this->currentGame = new PongGame();
+        break;
+    case 1: // Snake
+        this->currentGame = new SnakeGame();
+        break;
+    case 2: // Tic-Tac-Toe
+        //this->currentGame = new TicTacToeGame();
+        break;
+    }
 
     if (this->currentGame != nullptr) {
         this->currentGame->initialize();
