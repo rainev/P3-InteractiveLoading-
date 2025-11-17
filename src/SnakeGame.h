@@ -40,12 +40,12 @@ private:
 
     int score;
     float moveTimer;
-    const float MOVE_DELAY = 0.15f; // Snake moves every 0.15 seconds
+    const float MOVE_DELAY = 0.08f;
 
     // Grid settings
     const int GRID_SIZE = 20;
     const int CELL_SIZE = 30;
-    const int GRID_OFFSET_X = 460;  // Center on screen
+    const int GRID_OFFSET_X = 730;
     const int GRID_OFFSET_Y = 240;
 
     // Rendering

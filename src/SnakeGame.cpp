@@ -4,6 +4,9 @@
 #include <cstdlib>
 #include <ctime>
 
+// most of snake logic i nabbed from heree
+// https://github.com/ParadoxZero/sfml-snake/tree/master/src/core
+
 SnakeGame::SnakeGame()
 {
     this->gameState = READY;
