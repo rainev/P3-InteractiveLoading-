@@ -11,7 +11,7 @@ class FPSCounter :    public AGameObject
 		void draw(sf::RenderWindow* targetWindow) override;
 	
 	private:
-		sf::Time updateTime;
+		sf::Time updateTime = sf::Time::Zero;
 		sf::Text* statsText;
 		int framesPassed = 0;
 
