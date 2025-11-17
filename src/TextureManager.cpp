@@ -228,7 +228,7 @@ void TextureManager::loadGameAssetsAsync(const std::string& directoryPath)
 {
 	std::cout << "[TextureManager] Starting async load from directory: " << directoryPath << std::endl;
 
-	// First, count how many assets we need to load
+	// asset count
 	this->totalAssetsToLoad = 0;
 	for (const auto& entry : std::filesystem::directory_iterator(directoryPath)) {
 		if (entry.is_regular_file()) {
@@ -238,10 +238,9 @@ void TextureManager::loadGameAssetsAsync(const std::string& directoryPath)
 
 	std::cout << "[TextureManager] Total assets to load: " << this->totalAssetsToLoad << std::endl;
 
-	// Reset loaded count
 	this->loadedAssetsCount = 0;
 
-	// Now load them asynchronously
+	// loading
 	int index = 0;
 	for (const auto& entry : std::filesystem::directory_iterator(directoryPath)) {
 		if (entry.is_regular_file()) {

@@ -8,7 +8,7 @@ public:
 
     enum SceneType {
         LOADING_SCENE,
-        GAME_SCENE
+        FINAL_SCREEN
     };
 
     static SceneManager* getInstance();

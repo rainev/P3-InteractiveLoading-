@@ -85,6 +85,9 @@ void BaseRunner::update(sf::Time elapsedTime) {
 
 void BaseRunner::render() {
 	this->window.clear();
+
+	SceneManager::SceneType currentScene = SceneManager::getInstance()->getCurrentScene();
+
 	GameObjectManager::getInstance()->draw(&this->window);
 	this->window.display();
 }

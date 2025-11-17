@@ -5,6 +5,8 @@
 #include "SceneManager.h"
 #include <iostream>
 
+#include "FinalScreen.h"
+
 AssetLoader::AssetLoader() : AGameObject("AssetLoader")
 {
     this->loadingStarted = false;
@@ -56,9 +58,14 @@ void AssetLoader::update(sf::Time deltaTime)
 
         if (this->transitionTimer >= TRANSITION_DELAY) {
             std::cout << "[AssetLoader] Transitioning to game scene..." << std::endl;
-            SceneManager::getInstance()->setCurrentScene(SceneManager::GAME_SCENE);
+            SceneManager::getInstance()->setCurrentScene(SceneManager::FINAL_SCREEN);
 
-            // TODO: Load game scene objects (next step)
+            FinalScreen* finalScreen = new FinalScreen();
+            GameObjectManager::getInstance()->addObject(finalScreen);
+
+            // Remove loading screen and asset loader
+            GameObjectManager::getInstance()->deleteObjectByName("LoadingScreen");
+            GameObjectManager::getInstance()->deleteObjectByName("AssetLoader");
         }
     }
 }

@@ -51,7 +51,7 @@ void FPSCounter::updateFPS(sf::Time elapsedTime)
 	this->updateTime += elapsedTime;
 	this->framesPassed++;
 
-	if (this->updateTime >= sf::seconds(1.0f))
+	if (this->updateTime >= sf::seconds(0.5f))
 	{
 		float fps = this->framesPassed / this->updateTime.asSeconds();
 
