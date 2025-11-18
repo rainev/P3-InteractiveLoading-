@@ -52,7 +52,7 @@ void SnakeGame::initialize()
     this->snake.push_back({ start.x - 1, start.y });
     this->snake.push_back({ start.x - 2, start.y });
 
-    // Initial direction (moving right)
+    // starting direction
     this->direction = { 1, 0 };
     this->nextDirection = { 1, 0 };
 
@@ -61,18 +61,18 @@ void SnakeGame::initialize()
 
     // Create shapes
     this->cellShape = new sf::RectangleShape(sf::Vector2f(CELL_SIZE - 2, CELL_SIZE - 2));
-    this->cellShape->setFillColor(sf::Color::Green);
+    this->cellShape->setFillColor(sf::Color::White);
 
     this->foodShape = new sf::RectangleShape(sf::Vector2f(CELL_SIZE - 2, CELL_SIZE - 2));
-    this->foodShape->setFillColor(sf::Color::Red);
+    this->foodShape->setFillColor(sf::Color::White);
 
     // Grid background
     this->gridBackground = new sf::RectangleShape(
         sf::Vector2f(GRID_SIZE * CELL_SIZE, GRID_SIZE * CELL_SIZE)
     );
     this->gridBackground->setPosition(GRID_OFFSET_X, GRID_OFFSET_Y);
-    this->gridBackground->setFillColor(sf::Color(30, 30, 30));
-    this->gridBackground->setOutlineThickness(3.0f);
+    this->gridBackground->setFillColor(sf::Color::Black);
+    this->gridBackground->setOutlineThickness(5.0f);
     this->gridBackground->setOutlineColor(sf::Color::White);
 
     // Setup text

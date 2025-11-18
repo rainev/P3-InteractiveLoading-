@@ -61,7 +61,7 @@ void LoadingScreen::initialize()
 
     // Setup BG
     this->backgroundTexture = new sf::Texture();
-    if (this->backgroundTexture->loadFromFile("Media/Textures/pacmanBs.jpg")) {
+    if (this->backgroundTexture->loadFromFile("Media/Textures/pacmanBG.jpg")) {
         this->backgroundSprite = new sf::Sprite();
         this->backgroundSprite->setTexture(*this->backgroundTexture);
 
@@ -74,9 +74,8 @@ void LoadingScreen::initialize()
         std::cout << "[LoadingScreen] Background loaded successfully!" << std::endl;
     }
     else {
-        std::cout << "[LoadingScreen] WARNING: Could not load arcade_background.png" << std::endl;
-        // Create a simple colored background as fallback
-        this->backgroundSprite = nullptr;
+        std::cout << "[LoadingScreen] WARNING: Could not load background" << std::endl;
+        this->backgroundSprite = nullptr; //default if no bg found
     }
 
     // Setup loading text
@@ -315,7 +314,7 @@ void LoadingScreen::createMiniGame(int gameIndex)
 
     switch (gameIndex) {
     case 0: // Pong
-        //this->currentGame = new PongGame();
+        this->currentGame = new PingPong();
         break;
     case 1: // Snake
         this->currentGame = new SnakeGame();

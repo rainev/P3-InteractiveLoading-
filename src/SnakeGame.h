@@ -45,7 +45,7 @@ private:
     // Grid settings
     const int GRID_SIZE = 20;
     const int CELL_SIZE = 30;
-    const int GRID_OFFSET_X = 730;
+    const int GRID_OFFSET_X = 650;
     const int GRID_OFFSET_Y = 240;
 
     // Rendering
