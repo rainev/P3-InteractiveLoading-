@@ -51,6 +51,7 @@ target_link_libraries(P3 PRIVATE
     sfml-graphics
     sfml-window
     sfml-system
+	sfml-audio
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)

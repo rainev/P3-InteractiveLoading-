@@ -4,11 +4,15 @@
 #include "TextureManager.h"
 #include "TextureDisplay.h"
 #include "FPSCounter.h"
+#include <iostream>
 
 // [P3] stuff
 #include "SceneManager.h"
 #include "LoadingScreen.h"
 #include "AssetLoader.h"
+
+// 
+
 
 /// <summary>
 /// This demonstrates a running parallax background where after X seconds, a batch of assets will be streamed and loaded.
@@ -17,6 +21,17 @@ const sf::Time BaseRunner::TIME_PER_FRAME = sf::seconds(1.f / 60.f);
 
 BaseRunner::BaseRunner() :
 	window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "HO: Entity Component", sf::Style::Close) {
+
+	// background music
+	if (this->backgroundMusic.openFromFile("Media/Audio/backgroundMusic.ogg")) {
+		this->backgroundMusic.setVolume(50.0f);  
+		this->backgroundMusic.setLoop(true);
+		this->backgroundMusic.play();
+		std::cout << "[BaseRunner] Background music started" << std::endl;
+	}
+	else {
+		std::cout << "[BaseRunner] Failed to load background music" << std::endl;
+	}
 
 	//loading screen stuff [P3]
 	// Start with loading scene

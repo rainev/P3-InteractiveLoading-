@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 
-// most of snake logic i nabbed from heree
+// most of snake logic from heree
 // https://github.com/ParadoxZero/sfml-snake/tree/master/src/core
 
 SnakeGame::SnakeGame()
@@ -253,17 +253,16 @@ void SnakeGame::handleGameOver()
 
 void SnakeGame::draw(sf::RenderWindow* targetWindow)
 {
-    // Draw grid background
     targetWindow->draw(*this->gridBackground);
 
-    // Draw snake
+    // Draws th snake
     for (const Position& segment : this->snake) {
         this->cellShape->setPosition(
             GRID_OFFSET_X + segment.x * CELL_SIZE + 1,
             GRID_OFFSET_Y + segment.y * CELL_SIZE + 1
         );
 
-        // Make head brighter
+        // so front of snake is clear
         if (segment == this->snake.front()) {
             this->cellShape->setFillColor(sf::Color(100, 255, 100));
         }

@@ -21,6 +21,9 @@ LoadingScreen::LoadingScreen() : AGameObject("LoadingScreen")
     this->backButton = nullptr;
     this->backButtonText = nullptr;
     this->backButtonHovered = false;
+
+    this->backgroundSprite = nullptr;
+    this->backgroundTexture = nullptr;
 }
 
 LoadingScreen::~LoadingScreen()
@@ -29,6 +32,10 @@ LoadingScreen::~LoadingScreen()
     delete this->loadingText;
     delete this->progressBarBackground;
     delete this->progressBarFill;
+
+    delete this->backgroundSprite;
+    delete this->backgroundTexture;
+
 
     for (GameBox* box : this->gameBoxes) {
         delete box;
@@ -52,6 +59,26 @@ void LoadingScreen::initialize()
 {
     std::cout << "[LoadingScreen] Initializing..." << std::endl;
 
+    // Setup BG
+    this->backgroundTexture = new sf::Texture();
+    if (this->backgroundTexture->loadFromFile("Media/Textures/pacmanBs.jpg")) {
+        this->backgroundSprite = new sf::Sprite();
+        this->backgroundSprite->setTexture(*this->backgroundTexture);
+
+        // Scale to fit screen
+        sf::Vector2u texSize = this->backgroundTexture->getSize();
+        float scaleX = (float)BaseRunner::WINDOW_WIDTH / texSize.x;
+        float scaleY = (float)BaseRunner::WINDOW_HEIGHT / texSize.y;
+        this->backgroundSprite->setScale(scaleX, scaleY);
+
+        std::cout << "[LoadingScreen] Background loaded successfully!" << std::endl;
+    }
+    else {
+        std::cout << "[LoadingScreen] WARNING: Could not load arcade_background.png" << std::endl;
+        // Create a simple colored background as fallback
+        this->backgroundSprite = nullptr;
+    }
+
     // Setup loading text
     sf::Font* font = new sf::Font();
     font->loadFromFile("Media/Sansation.ttf");
@@ -70,7 +97,7 @@ void LoadingScreen::initialize()
 
     // Setup progress bar fill
     this->progressBarFill = new sf::RectangleShape(sf::Vector2f(0, BAR_HEIGHT));
-    this->progressBarFill->setFillColor(sf::Color(0, 200, 0));
+    this->progressBarFill->setFillColor(sf::Color(255, 255, 255));
     this->progressBarFill->setPosition(50.0f, 90.0f);
 
     // Create game boxes
@@ -314,12 +341,23 @@ void LoadingScreen::cleanupCurrentGame()
 
 void LoadingScreen::draw(sf::RenderWindow* targetWindow)
 {
-    // Apply zoom view if transitioning or playing
+    // zoom
     if (this->currentState == ZOOMING_IN || this->currentState == ZOOMING_OUT) {
         targetWindow->setView(*this->zoomView);
     }
     else {
         targetWindow->setView(targetWindow->getDefaultView());
+    }
+
+    // bg
+    if (this->backgroundSprite != nullptr) {
+        targetWindow->draw(*this->backgroundSprite);
+    }
+    else {
+        // in case no bg img was found
+        sf::RectangleShape fallback(sf::Vector2f(BaseRunner::WINDOW_WIDTH, BaseRunner::WINDOW_HEIGHT));
+        fallback.setFillColor(sf::Color(20, 20, 40));
+        targetWindow->draw(fallback);
     }
 
     // Draw based on state
@@ -350,7 +388,7 @@ void LoadingScreen::draw(sf::RenderWindow* targetWindow)
         targetWindow->draw(*this->backButton);
         targetWindow->draw(*this->backButtonText);
 
-        // Draw loading progress in corner
+        // Draw loding progress (in %)
         sf::Vector2f oldPos = this->loadingText->getPosition();
         this->loadingText->setCharacterSize(24);
         this->loadingText->setPosition(BaseRunner::WINDOW_WIDTH - 300.0f, 30.0f);

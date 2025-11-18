@@ -24,6 +24,10 @@ private:
     sf::RectangleShape* progressBarFill;
     float currentProgress;
 
+    //bg
+    sf::Sprite* backgroundSprite;
+    sf::Texture* backgroundTexture;
+
     // Game selection
     std::vector<GameBox*> gameBoxes;
     MiniGame* currentGame;
@@ -38,7 +42,7 @@ private:
     };
     LoadingState currentState;
 
-    // Zoom transition
+    // Zoom transition stuff
     sf::View* zoomView;
     float zoomProgress;
     sf::Vector2f zoomTarget;
@@ -60,8 +64,8 @@ private:
     void createMiniGame(int gameIndex);
     void cleanupCurrentGame();
 
-    const float BAR_WIDTH = 600.0f;
-    const float BAR_HEIGHT = 40.0f;
+    const float BAR_WIDTH = 500.0f;
+    const float BAR_HEIGHT = 10.0f;
     const float BOX_SIZE = 200.0f;
     const float BOX_SPACING = 50.0f;
 };

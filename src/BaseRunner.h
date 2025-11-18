@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+
 #include <vector>
 
 using namespace std;
@@ -15,6 +17,7 @@ public:
 private:
 	
 	sf::RenderWindow		window;
+	sf::Music backgroundMusic;
 
 	void render();
 	void processEvents();
