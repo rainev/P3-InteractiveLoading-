@@ -16,10 +16,6 @@ public:
 private:
     std::vector<sf::Sprite*> assetSprites;
 
-    float scrollOffset;
-    float targetScrollOffset;
-    bool needsScrolling;
-
     // design stuff
     std::vector<sf::RectangleShape*> scanlines;
     sf::RectangleShape* vignette;
@@ -32,9 +28,8 @@ private:
     float glowPulse;
 
     // actions & layour
-    const float SCROLL_SPEED = 200.0f;
-    const int SPRITES_PER_ROW = 35;
-    const int SPRITE_SIZE = 40;
+    const int SPRITES_PER_ROW = 40;
+    const int SPRITE_SIZE = 45;
     const int SPRITE_PADDING = -2;
 
     // space and transparency
@@ -45,11 +40,6 @@ private:
     const float TOP_UI_HEIGHT = 80.0f;      
     const float BOTTOM_UI_HEIGHT = 70.0f;
     const float CONTENT_TOP_MARGIN = 90.0f;  
-
-    float totalContentHeight;
-    float availableHeight;
-
-    sf::RenderWindow* windowPtr;
 
     void layoutSprites();
     void createScanlines();
