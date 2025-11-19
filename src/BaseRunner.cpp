@@ -2,7 +2,6 @@
 #include  "GameObjectManager.h"
 #include "BGObject.h"
 #include "TextureManager.h"
-#include "TextureDisplay.h"
 #include "FPSCounter.h"
 #include <iostream>
 
@@ -24,7 +23,7 @@ BaseRunner::BaseRunner() :
 
 	// background music
 	if (this->backgroundMusic.openFromFile("Media/Audio/backgroundMusic.ogg")) {
-		this->backgroundMusic.setVolume(50.0f);  
+		this->backgroundMusic.setVolume(20.0f);  
 		this->backgroundMusic.setLoop(true);
 		this->backgroundMusic.play();
 		std::cout << "[BaseRunner] Background music started" << std::endl;
