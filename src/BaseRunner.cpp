@@ -1,6 +1,5 @@
 #include "BaseRunner.h"
 #include  "GameObjectManager.h"
-#include "BGObject.h"
 #include "TextureManager.h"
 #include "FPSCounter.h"
 #include <iostream>
@@ -46,13 +45,6 @@ BaseRunner::BaseRunner() :
 	//asset loader
 	AssetLoader* assetLoader = new AssetLoader();
 	GameObjectManager::getInstance()->addObject(assetLoader);
-
-	//load objects
-	//BGObject* bgObject = new BGObject("BGObject");
-	//GameObjectManager::getInstance()->addObject(bgObject);
-
-	//TextureDisplay* display = new TextureDisplay();
-	//GameObjectManager::getInstance()->addObject(display);
 
 	FPSCounter* fpsCounter = new FPSCounter();
 	GameObjectManager::getInstance()->addObject(fpsCounter);

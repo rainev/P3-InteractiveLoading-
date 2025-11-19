@@ -19,8 +19,8 @@ private:
     sf::RectangleShape* scanLine;
 
     enum TransitionState {
-        FLICKER_OUT,      // Screen flickers and shrinks
-        STATIC_NOISE,     // Brief static
+        FLICKER_OUT,      // flickering
+        STATIC_NOISE,     // static fx
         FLICKER_IN,       // New screen flickers in
         COMPLETE
     };

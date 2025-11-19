@@ -6,7 +6,6 @@
 #include "SceneManager.h"
 #include <iostream>
 
-#include "BGObject.h"
 #include "FinalScreen.h"
 
 AssetLoader::AssetLoader() : AGameObject("AssetLoader")
@@ -23,7 +22,6 @@ void AssetLoader::initialize()
 {
     std::cout << "[AssetLoader] Initialized" << std::endl;
 
-    // Find the loading screen object
     this->loadingScreen = (LoadingScreen*)GameObjectManager::getInstance()->findObjectByName("LoadingScreen");
 }
 
