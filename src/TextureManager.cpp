@@ -249,10 +249,10 @@ void TextureManager::loadGameAssetsAsync(const std::string& directoryPath)
 			// Enqueue each asset load task to thread pool
 			this->threadPool->enqueueTask([this, path, index]() {
 
-				// Simulate heavy loading with delay
-				IETThread::sleep(100);  // 100ms delay per asset
+				// "Mention how much time delay you added for loading each asset."
+				IETThread::sleep(200);  
 
-				// Extract asset name
+				// asset name
 				std::vector<String> tokens = StringUtils::split(path, '/');
 				if (tokens.empty()) {
 					tokens = StringUtils::split(path, '\\');

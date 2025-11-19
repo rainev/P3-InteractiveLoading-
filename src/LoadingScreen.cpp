@@ -6,7 +6,6 @@
 
 #include "PingPong.h"
 #include "SnakeGame.h"
-#include "TicTacToeGame.h"
 
 LoadingScreen::LoadingScreen() : AGameObject("LoadingScreen")
 {
@@ -75,10 +74,10 @@ void LoadingScreen::initialize()
     }
     else {
         std::cout << "[LoadingScreen] WARNING: Could not load background" << std::endl;
-        this->backgroundSprite = nullptr; //default if no bg found
+        this->backgroundSprite = nullptr; //default if no bg found incase
     }
 
-    // Setup loading text
+    // loading text
     sf::Font* font = new sf::Font();
     font->loadFromFile("Media/Sansation.ttf");
 
@@ -89,23 +88,19 @@ void LoadingScreen::initialize()
     this->loadingText->setFillColor(sf::Color::White);
     this->loadingText->setPosition(50.0f, 30.0f);
 
-    // Setup progress bar background
+    // progress bar bg
     this->progressBarBackground = new sf::RectangleShape(sf::Vector2f(BAR_WIDTH, BAR_HEIGHT));
     this->progressBarBackground->setFillColor(sf::Color(50, 50, 50));
     this->progressBarBackground->setPosition(50.0f, 90.0f);
 
-    // Setup progress bar fill
+    // progress bar FILL
     this->progressBarFill = new sf::RectangleShape(sf::Vector2f(0, BAR_HEIGHT));
     this->progressBarFill->setFillColor(sf::Color(255, 255, 255));
     this->progressBarFill->setPosition(50.0f, 90.0f);
 
-    // Create game boxes
     this->createGameBoxes();
-
-    // Create back button
     this->createBackButton();
 
-    // Initialize zoom view
     this->zoomView = new sf::View(sf::FloatRect(0, 0, BaseRunner::WINDOW_WIDTH, BaseRunner::WINDOW_HEIGHT));
 }
 

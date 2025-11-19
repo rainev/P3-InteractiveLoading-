@@ -13,6 +13,10 @@ FinalScreen::FinalScreen() : AGameObject("FinalScreen")
     this->scanlineAlpha = SCANLINE_ALPHA;
     this->staticTimer = 0.0f;
     this->glowPulse = 0.0f;
+
+    this->totalContentHeight = 0.0f;
+    this->availableHeight = 0.0f;
+    this->windowPtr = nullptr;
 }
 
 FinalScreen::~FinalScreen()
@@ -54,7 +58,7 @@ void FinalScreen::initialize()
             sf::Vector2u textureSize = texture->getSize();
             float scaleX = (float)SPRITE_SIZE / textureSize.x;
             float scaleY = (float)SPRITE_SIZE / textureSize.y;
-            float scale = std::min(scaleX, scaleY); // Maintain aspect ratio
+            float scale = std::min(scaleX, scaleY);
             sprite->setScale(scale, scale);
 
             this->assetSprites.push_back(sprite);
@@ -225,21 +229,21 @@ void FinalScreen::update(sf::Time deltaTime)
     }
     */
 
-    // Animate scanline intensity (subtle pulse)
-    this->glowPulse += deltaTime.asSeconds() * 2.0f;
-    this->scanlineAlpha = SCANLINE_ALPHA + (std::sin(this->glowPulse) * 5.0f);
+    //// Animate scanline intensity (subtle pulse)
+    //this->glowPulse += deltaTime.asSeconds() * 2.0f;
+    //this->scanlineAlpha = SCANLINE_ALPHA + (std::sin(this->glowPulse) * 5.0f);
 
-    for (sf::RectangleShape* scanline : this->scanlines) {
-        scanline->setFillColor(sf::Color(0, 0, 0, (int)this->scanlineAlpha));
-    }
+    //for (sf::RectangleShape* scanline : this->scanlines) {
+    //    scanline->setFillColor(sf::Color(0, 0, 0, (int)this->scanlineAlpha));
+    //}
 
-    // Static noise flicker
-    this->staticTimer += deltaTime.asSeconds();
-    if (this->staticTimer >= 0.1f) {
-        this->staticTimer = 0.0f;
-        int alpha = 3 + (std::rand() % 5);
-        this->staticNoise->setFillColor(sf::Color(255, 255, 255, alpha));
-    }
+    //// Static noise flicker
+    //this->staticTimer += deltaTime.asSeconds();
+    //if (this->staticTimer >= 0.1f) {
+    //    this->staticTimer = 0.0f;
+    //    int alpha = 3 + (std::rand() % 5);
+    //    this->staticNoise->setFillColor(sf::Color(255, 255, 255, alpha));
+    //}
 
     // Title text glow pulse
     int greenValue = 200 + (int)(std::sin(this->glowPulse * 2.0f) * 55.0f);
@@ -266,25 +270,25 @@ void FinalScreen::draw(sf::RenderWindow* targetWindow)
         sprite->setPosition(originalPos);
     }
 
-    for (sf::RectangleShape* scanline : this->scanlines) {
-        targetWindow->draw(*scanline);
-    }
+    //for (sf::RectangleShape* scanline : this->scanlines) {
+    //    targetWindow->draw(*scanline);
+    //}
 
     // Draw subtle static noise
-    targetWindow->draw(*this->staticNoise);
+    //targetWindow->draw(*this->staticNoise);
 
-    // Draw vignette edges (darker corners)
-    // Top edge
-    sf::RectangleShape topVignette(sf::Vector2f(BaseRunner::WINDOW_WIDTH, 80));
-    topVignette.setPosition(0, 0);
-    topVignette.setFillColor(sf::Color(0, 0, 0, 120));
-    targetWindow->draw(topVignette);
+    //// Draw vignette edges (darker corners)
+    //// Top edge
+    //sf::RectangleShape topVignette(sf::Vector2f(BaseRunner::WINDOW_WIDTH, 80));
+    //topVignette.setPosition(0, 0);
+    //topVignette.setFillColor(sf::Color(0, 0, 0, 120));
+    //targetWindow->draw(topVignette);
 
-    // Bottom edge
-    sf::RectangleShape bottomVignette(sf::Vector2f(BaseRunner::WINDOW_WIDTH, 80));
-    bottomVignette.setPosition(0, BaseRunner::WINDOW_HEIGHT - 80);
-    bottomVignette.setFillColor(sf::Color(0, 0, 0, 120));
-    targetWindow->draw(bottomVignette);
+    //// Bottom edge
+    //sf::RectangleShape bottomVignette(sf::Vector2f(BaseRunner::WINDOW_WIDTH, 80));
+    //bottomVignette.setPosition(0, BaseRunner::WINDOW_HEIGHT - 80);
+    //bottomVignette.setFillColor(sf::Color(0, 0, 0, 120));
+    //targetWindow->draw(bottomVignette);
 
     // Displays borders top & bttm
     sf::RectangleShape borderTop(sf::Vector2f(BaseRunner::WINDOW_WIDTH, 2));
