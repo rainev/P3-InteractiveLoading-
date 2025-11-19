@@ -33,8 +33,8 @@ private:
 
     // actions & layour
     const float SCROLL_SPEED = 200.0f;
-    const int SPRITES_PER_ROW = 10;
-    const int SPRITE_SIZE = 80;
+    const int SPRITES_PER_ROW = 13;
+    const int SPRITE_SIZE = 130;
     const int SPRITE_PADDING = 10;
 
     // space and transparency

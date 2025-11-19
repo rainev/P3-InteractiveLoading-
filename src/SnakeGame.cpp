@@ -107,7 +107,7 @@ void SnakeGame::setupText()
         GRID_OFFSET_X,
         GRID_OFFSET_Y + GRID_SIZE * CELL_SIZE + 20.0f
     );
-    this->instructionText->setString("Arrow Keys to Move | Press Any Arrow Key to Start");
+    this->instructionText->setString("WASD to Move | Press Any Key to Start");
 
     // Game over text
     this->gameOverText = new sf::Text();
@@ -156,10 +156,10 @@ void SnakeGame::processInput(sf::Event event)
 
         // Start game if in READY state
         if (this->gameState == READY) {
-            if (event.key.code == sf::Keyboard::Up ||
-                event.key.code == sf::Keyboard::Down ||
-                event.key.code == sf::Keyboard::Left ||
-                event.key.code == sf::Keyboard::Right) {
+            if (event.key.code == sf::Keyboard::W ||
+                event.key.code == sf::Keyboard::S ||
+                event.key.code == sf::Keyboard::A ||
+                event.key.code == sf::Keyboard::D) {
                 this->gameState = PLAYING;
                 std::cout << "[SnakeGame] Game started!" << std::endl;
             }
@@ -175,16 +175,16 @@ void SnakeGame::processInput(sf::Event event)
 
         // Handle direction changes (only if playing)
         if (this->gameState == PLAYING) {
-            if (event.key.code == sf::Keyboard::Up && this->direction.y == 0) {
+            if (event.key.code == sf::Keyboard::W && this->direction.y == 0) {
                 this->nextDirection = { 0, -1 };
             }
-            else if (event.key.code == sf::Keyboard::Down && this->direction.y == 0) {
+            else if (event.key.code == sf::Keyboard::S && this->direction.y == 0) {
                 this->nextDirection = { 0, 1 };
             }
-            else if (event.key.code == sf::Keyboard::Left && this->direction.x == 0) {
+            else if (event.key.code == sf::Keyboard::A && this->direction.x == 0) {
                 this->nextDirection = { -1, 0 };
             }
-            else if (event.key.code == sf::Keyboard::Right && this->direction.x == 0) {
+            else if (event.key.code == sf::Keyboard::D && this->direction.x == 0) {
                 this->nextDirection = { 1, 0 };
             }
         }
