@@ -1,85 +1,93 @@
-#include "AssetLoader.hpp"
-#include <chrono>
-#include <thread>
-#include <filesystem>
-#include <algorithm>
+#include "AssetLoader.h"
+#include "LoadingScreen.h"
+#include "CRTTransition.h"
+#include "TextureManager.h"
+#include "GameObjectManager.h"
+#include "SceneManager.h"
+#include <iostream>
 
-namespace fs = std::filesystem;
+#include "FinalScreen.h"
 
-void loaderThreadFunc(
-    LoadedAssets* data,
-    std::vector<AssetInfo> assets,
-    int delayPerAssetMs
-) {
-    data->totalCount = assets.size();
-
-    for (const auto& asset : assets) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(delayPerAssetMs));
-
-        if (asset.type == AssetType::Texture) {
-            auto tex = std::make_shared<sf::Texture>();
-            if (tex->loadFromFile(asset.path)) {
-                std::lock_guard<std::mutex> lock(data->mtx);
-                data->textures.push_back(tex);
-            }
-        } else if (asset.type == AssetType::Sound) {
-            auto buf = std::make_shared<sf::SoundBuffer>();
-            if (buf->loadFromFile(asset.path)) {
-                std::lock_guard<std::mutex> lock(data->mtx);
-                data->sounds.push_back(buf);
-            }
-        }
-
-        data->loadedCount.fetch_add(1);
-    }
-
-    data->done.store(true);
-}
-
-static bool hasExtension(const fs::path& p,
-                         const std::vector<std::string>& exts)
+AssetLoader::AssetLoader() : AGameObject("AssetLoader")
 {
-    auto ext = p.extension().string();
-    std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
-    for (const auto& e : exts) {
-        if (ext == e) return true;
-    }
-    return false;
+    this->loadingStarted = false;
+    this->loadingFinished = false;
+    this->transitionStarted = false;
+    this->transitionTimer = 0.0f;
+    this->loadingScreen = nullptr;
+    this->transitionStarted = false;
 }
 
-std::vector<AssetInfo> discoverAssets(
-    const std::string& texturesRoot,
-    const std::string& audioRoot
-) {
-    std::vector<AssetInfo> assets;
+void AssetLoader::initialize()
+{
+    std::cout << "[AssetLoader] Initialized" << std::endl;
 
-    // Discover textures (png, jpg, jpeg)
-    std::vector<std::string> texExts = {".png", ".jpg", ".jpeg", ".bmp"};
-    if (fs::exists(texturesRoot)) {
-        for (const auto& entry : fs::recursive_directory_iterator(texturesRoot)) {
-            if (!entry.is_regular_file()) continue;
-            if (!hasExtension(entry.path(), texExts)) continue;
+    this->loadingScreen = (LoadingScreen*)GameObjectManager::getInstance()->findObjectByName("LoadingScreen");
+}
 
-            assets.push_back(AssetInfo{
-                entry.path().string(),
-                AssetType::Texture
-            });
+void AssetLoader::processInput(sf::Event event)
+{
+}
+
+void AssetLoader::update(sf::Time deltaTime)
+{
+    // Start loading on first update
+    if (!this->loadingStarted) {
+        std::cout << "[AssetLoader] Starting asset load..." << std::endl;
+        TextureManager::getInstance()->loadGameAssetsAsync("Media/Streaming");
+        this->loadingStarted = true;
+    }
+
+    // Update loading progress
+    if (this->loadingStarted && !this->loadingFinished) {
+        float progress = TextureManager::getInstance()->getLoadingProgress();
+
+        if (this->loadingScreen != nullptr) {
+            this->loadingScreen->updateProgress(progress);
+        }
+
+        // Check if loading is complete
+        if (progress >= 1.0f) {
+            std::cout << "[AssetLoader] Loading complete!" << std::endl;
+            this->loadingFinished = true;
+            SceneManager::getInstance()->setLoadingComplete(true);
         }
     }
 
-    // Discover audio (wav, ogg, flac, mp3)
-    std::vector<std::string> audioExts = {".wav", ".ogg", ".flac", ".mp3"};
-    if (fs::exists(audioRoot)) {
-        for (const auto& entry : fs::recursive_directory_iterator(audioRoot)) {
-            if (!entry.is_regular_file()) continue;
-            if (!hasExtension(entry.path(), audioExts)) continue;
+    // Transition after delay
+    if (this->loadingFinished && !this->transitionStarted) {
+        this->transitionTimer += deltaTime.asSeconds();
 
-            assets.push_back(AssetInfo{
-                entry.path().string(),
-                AssetType::Sound
-            });
+        if (this->transitionTimer >= TRANSITION_DELAY) {
+            std::cout << "[AssetLoader] Transitioning to game scene..." << std::endl;
+
+            this->crtTransition = new CRTTransition();
+            GameObjectManager::getInstance()->addObject(this->crtTransition);
+            GameObjectManager::getInstance()->deleteObjectByName("LoadingScreen");
+
+            this->transitionStarted = true;
         }
     }
 
-    return assets;
+    // change scene after the transition
+    if (this->transitionStarted && this->crtTransition != nullptr) {
+        if (this->crtTransition->isComplete()) {
+            std::cout << "[AssetLoader] Transition complete, loading game scene..." << std::endl;
+            SceneManager::getInstance()->setCurrentScene(SceneManager::FINAL_SCREEN);
+
+            // create the final screen (assets all loaded)
+            FinalScreen* finalScreen = new FinalScreen();
+            GameObjectManager::getInstance()->addObject(finalScreen);
+
+
+            // Remove loading screen related objects
+            //GameObjectManager::getInstance()->deleteObjectByName("LoadingScreen");
+            GameObjectManager::getInstance()->deleteObjectByName("CRTTransition");
+            GameObjectManager::getInstance()->deleteObjectByName("AssetLoader");
+
+            std::cout << "[AssetLoader] Game scene created!" << std::endl;
+        }
+    }
 }
+
+
