@@ -25,7 +25,6 @@ public:
 public:
 	static TextureManager* getInstance();
 	void loadFromAssetList(); //loading of all assets needed for startup
-	void loadSingleStreamAsset(int index); //loads a single streaming asset based on index in directory
 	sf::Texture* getFromTextureMap(const String assetName, int frameIndex);
 	int getNumFrames(const String assetName);
 
@@ -33,10 +32,7 @@ public:
 	int getNumLoadedStreamTextures() const;
 
 	// thread pool new stuff
-	void loadBatchAsync(int startIndex, int count);
-	bool hasReadyTexture();
 	LoadedTexture popReadyTexture();
-	int getReadyQueueSize() const;
 
 	// p3 related stuff
 	void loadGameAssetsAsync(const std::string& assetListFile);  
@@ -46,7 +42,6 @@ public:
 
 private:
 	TextureManager();
-	TextureManager(TextureManager const&) {};             // copy constructor is private
 	TextureManager& operator=(TextureManager const&) {};  // assignment operator is private
 	static TextureManager* sharedInstance;
 
@@ -64,8 +59,6 @@ private:
 	std::queue<LoadedTexture> readyQueue;  
 	std::mutex queueMutex;  
 	ThreadPool* threadPool;  
-
-	void loadSingleStreamAssetSync(int index);
 
 	// p3 related stuff
 	int totalAssetsToLoad = 0; 
