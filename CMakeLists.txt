@@ -54,6 +54,14 @@ target_link_libraries(P3 PRIVATE
 	sfml-audio
 )
 
+add_custom_command(
+    TARGET P3 POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/Media
+        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Media
+)
+
 if (CMAKE_VERSION VERSION_GREATER 3.12)
 	set_property(TARGET P3 PROPERTY CXX_STANDARD 20)
 endif()
+
