@@ -250,7 +250,7 @@ void TextureManager::loadGameAssetsAsync(const std::string& directoryPath)
 			this->threadPool->enqueueTask([this, path, index]() {
 
 				// "Mention how much time delay you added for loading each asset."
-				IETThread::sleep(200);  
+				IETThread::sleep(0.01);  
 
 				// asset name
 				std::vector<String> tokens = StringUtils::split(path, '/');
